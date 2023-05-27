@@ -9,12 +9,14 @@ void loop() {
   if (Serial.available() > 0) {
     Serial.readBytes(in, 2);
     Serial.print(in[0]);Serial.println(in[1]);
-    //switch (in[1]){
-      //case 0: digitalWrite(4, LOW);
-        //break;
-      //case 1: digitalWrite(4, HIGH);
-        //break;
+    if (in[0] == 4) {
+       switch (in[1]){
+      case 0: digitalWrite(4, LOW);
+        break;
+      case 1: digitalWrite(4, HIGH);
+        break;
+    }
   }
-  
+  }
    
 }
