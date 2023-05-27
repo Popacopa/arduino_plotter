@@ -17,15 +17,18 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         self.ports = list(filter(self.__func, self.ports))
         self.comboBox.addItems(self.ports)
         self.checkBox.clicked.connect(self.check)
+    def printIn(self):
+        In = serial.readLine()
+        print(In)
         #self.on = self.to_bytes(41)
         #self.off = self.to_bytes(40)
     def to_bytes(self, n):...
     def check(self):
         match self.checkBox.checkState():
-            case 2:serial.write(bytes([4, 1])); print(bytes([4, 1]))
-            case 0:serial.write(bytes([4, 0])); print(bytes([4, 0]))
+            case 2:serial.write(bytes([4, 1])); #print(bytes([4, 1]))
+            case 0:serial.write(bytes([4, 0])); #print(bytes([4, 0]))
 
-            
+
     def __func(self, description):
         return True if 'USB' in self.ports[description] else False
     def openPort(self):
@@ -35,6 +38,7 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         serial.BaudRate(9600)
         serial.setPortName(self.comboBox.currentText())
         serial.open(QIODevice.ReadWrite)
+        serial.readyRead.connect(self.printIn)
         #view = GraphView('port1')
         #view.show()
 class GraphView(QMainWindow, port.Ui_MainWindow):
