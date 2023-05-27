@@ -8,9 +8,9 @@ void loop() {
   // put your main code here, to run repeatedly:
   if (Serial.available() > 0) {
     switch (Serial.read()){
-      case 'f': digitalWrite(4, LOW);
+      case ')': digitalWrite(4, LOW);
         break;
-      case 'n': digitalWrite(4, HIGH);
+      case '(': digitalWrite(4, HIGH);
         break;
   }
   }

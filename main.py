@@ -5,6 +5,8 @@ from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from sys import argv, exit
 import plotWindow
 import port
+
+
 res = {}
 class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
     def __init__(self) -> None:
@@ -15,11 +17,15 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         self.ports = list(filter(self.__func, self.ports))
         self.comboBox.addItems(self.ports)
         self.checkBox.clicked.connect(self.check)
+        #self.on = self.to_bytes(41)
+        #self.off = self.to_bytes(40)
+    def to_bytes(self, n):...
     def check(self):
         match self.checkBox.checkState():
-            case 2:serial.write('4n'.encode())
-            case 0:serial.write('f'.encode())
-        print('n'.encode())
+            case 2:serial.write(bytes([4, 1])); print(bytes([4, 1]))
+            case 0:serial.write(bytes([4, 0])); print(bytes([4, 0]))
+
+            
     def __func(self, description):
         return True if 'USB' in self.ports[description] else False
     def openPort(self):
