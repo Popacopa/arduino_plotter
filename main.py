@@ -17,9 +17,9 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         self.ports = list(filter(self.__func, self.ports))
         self.comboBox.addItems(self.ports)
         self.checkBox.clicked.connect(self.check)
-        self.checkBox_2.clicked.connect(self.check)
-        self.checkBox_3.clicked.connect(self.check)
-        self.checkBox_4.clicked.connect(self.check)
+        self.checkBox_2.clicked.connect(self.check_2)
+        self.checkBox_3.clicked.connect(self.check_3)
+        self.checkBox_4.clicked.connect(self.check_4)
     def printIn(self):
         In = serial.readLine()
         print(In)
@@ -30,19 +30,22 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         match self.checkBox.checkState():
             case 2:serial.write(bytes([4, 1])); #print(bytes([4, 1]))
             case 0:serial.write(bytes([4, 0])); #print(bytes([4, 0]))
+    def check_2(self):
         match self.checkBox_2.checkState():
             case 2:serial.write(bytes([5, 1])); #print(bytes([4, 1]))
             case 0:serial.write(bytes([5, 0]));
-        match self.checkBox_3.checkState():
+    def check_3(self):
+         match self.checkBox_3.checkState():
             case 2:serial.write(bytes([6, 1])); #print(bytes([4, 1]))
             case 0:serial.write(bytes([6, 0]));
-        match self.checkBox_4.checkState():
+    def check_4(self):
+         match self.checkBox_4.checkState():
             case 2:serial.write(bytes([7, 1])); #print(bytes([4, 1]))
             case 0:serial.write(bytes([7, 0]));
     def __func(self, description):
         return True if 'USB' in self.ports[description] else False
     def openPort(self):
-        global view 
+        #global view 
         global serial
         serial = QSerialPort()
         serial.BaudRate(9600)
