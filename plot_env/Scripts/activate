@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\paush\Desktop\python\plotter\source\plot_env"
+VIRTUAL_ENV="C:\Users\paush\Desktop\python\plotter\arduino_plotter-\plot_env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
