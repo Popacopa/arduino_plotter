@@ -15,19 +15,22 @@ void setup() {
   AnalogData_2[0] = 2;
 }
 
-unsigned long last_print;
+unsigned long last_print1;
+unsigned long last_print2;
 char in[2];
 
 void loop() {
   checkBoxies();
-  if (millis() - last_print >= 0) {
+  if (millis() - last_print1 >= 10) {
     AnalogData_1[1] = millis(); AnalogData_1[2] = analogRead(A4);
-    AnalogData_2[1] = millis(); AnalogData_2[2] = analogRead(A6); 
     Serial.print(AnalogData_1[0]); Serial.print(';'); Serial.print(AnalogData_1[1]);  Serial.print(';'); Serial.println(AnalogData_1[2]); 
-    Serial.print(AnalogData_2[0]); Serial.print(';'); Serial.print(AnalogData_2[1]);  Serial.print(';'); Serial.println(AnalogData_2[2]); 
-    last_print = millis();
-
+    last_print1 = millis();
   }
+  //if (millis() - last_print2 >= 10) {
+  //  AnalogData_2[1] = millis(); AnalogData_2[2] = analogRead(A6); 
+  //  Serial.print(AnalogData_2[0]); Serial.print(';'); Serial.print(AnalogData_2[1]);  Serial.print(';'); Serial.println(AnalogData_2[2]);
+  //  last_print2 = millis();
+  //}
 }
 
 

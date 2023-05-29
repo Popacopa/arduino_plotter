@@ -35,13 +35,10 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
                 msg.exec_()
         return wrapper
     def __printData(self):
-        res =  str(serial.readLine(), 'utf-8').split(';')
-        def toInt(val):
-            return int(val)
-        res = list(map(toInt, res))
-        if res[0] == 1:
-            coordX.append(res[1])
-            coordY.append(res[2])
+        key, x, y =  str(serial.readLine(), 'utf-8').split(';')
+        if key == '1':
+            coordX.append(int(x))
+            coordY.append(int(y))
             view.write()
     @tryToOpen
     def check(self):
@@ -86,6 +83,7 @@ class GraphView(QMainWindow, port.Ui_MainWindow):
         self.setWindowTitle(name)
         self.setupUi(self)
     def write(self):
+        self.graph.clear()
         self.graph.plot(coordX, coordY)
 def main():
     app = QApplication(argv)
