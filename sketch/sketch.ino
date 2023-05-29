@@ -1,3 +1,6 @@
+
+
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(4, OUTPUT);
@@ -6,10 +9,19 @@ void setup() {
   pinMode(7, OUTPUT);
   Serial.begin(9600);
 }
+
+
 char in[2];
+
 void loop() {
-  // put your main code here, to run repeatedly:
-  if (Serial.available() > 0) {
+  checkBoxies();
+}
+
+
+
+
+void checkBoxies() {
+    if (Serial.available() > 0) {
     Serial.readBytes(in, 2);
     switch (in[0]) {
       case 4:
