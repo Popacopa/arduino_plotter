@@ -20,23 +20,14 @@ unsigned long last_print2;
 char in[2];
 
 void loop() {
-  checkBoxies();
-  if (millis() - last_print1 >= 10) {
-    AnalogData_1[1] = millis(); AnalogData_1[2] = analogRead(A4);
-    Serial.print(AnalogData_1[0]); Serial.print(';'); Serial.print(AnalogData_1[1]);  Serial.print(';'); Serial.println(AnalogData_1[2]); 
-    last_print1 = millis();
-  }
-  //if (millis() - last_print2 >= 10) {
-  //  AnalogData_2[1] = millis(); AnalogData_2[2] = analogRead(A6); 
-  //  Serial.print(AnalogData_2[0]); Serial.print(';'); Serial.print(AnalogData_2[1]);  Serial.print(';'); Serial.println(AnalogData_2[2]);
-  //  last_print2 = millis();
-  //}
+  checkData();
+
 }
 
 
 
 
-void checkBoxies() {
+void checkData() {
     if (Serial.available() > 0) {
     Serial.readBytes(in, 2);
     switch (in[0]) {
@@ -59,6 +50,18 @@ void checkBoxies() {
       switch (in[1]) {
           case 1: digitalWrite(in[0], HIGH); break;
           case 0: digitalWrite(in[0], LOW); break;
+        } break;
+      case 8: 
+        if (millis() - last_print1 >= 10) {
+          AnalogData_1[1] = millis(); AnalogData_1[2] = analogRead(A4);
+          Serial.print(AnalogData_1[0]); Serial.print(';'); Serial.print(AnalogData_1[1]);  Serial.print(';'); Serial.println(AnalogData_1[2]); 
+          last_print1 = millis();
+        } break;
+      case 9: 
+        if (millis() - last_print1 >= 10) {
+          AnalogData_2[1] = millis(); AnalogData_2[2] = analogRead(A6);
+          Serial.print(AnalogData_2[0]); Serial.print(';'); Serial.print(AnalogData_2[1]);  Serial.print(';'); Serial.println(AnalogData_2[2]); 
+          last_print1 = millis();
         } break;
     }
   }

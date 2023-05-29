@@ -8,6 +8,19 @@ import port
 
 coordX = []
 coordY = []
+
+def tryToOpen(func):
+    def wrapper(self):
+        if self.pushButton_2.isEnabled() == False:
+            func(self)
+        else:
+            msg = QMessageBox()
+            msg.setText('Порт не запущен!')
+            msg.setWindowTitle('port_error')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
+    return wrapper
+
 class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
     def __init__(self) -> None:
         super().__init__()
@@ -23,17 +36,8 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         self.checkBox_3.clicked.connect(self.__check_3)
         self.checkBox_4.clicked.connect(self.__check_4)
         self.pushButton.setEnabled(False)
-    def tryToOpen(func):
-        def wrapper(self):
-            if self.pushButton_2.isEnabled() == False:
-                func(self)
-            else:
-                msg = QMessageBox()
-                msg.setText('Порт не запущен!')
-                msg.setWindowTitle('port_error')
-                msg.setIcon(QMessageBox.Warning)
-                msg.exec_()
-        return wrapper
+    def write(self, *args):
+        serial.write(bytes(*args))
     def __printData(self):
         key, x, y =  str(serial.readLine(), 'utf-8').split(';')
         if key == '1':
@@ -64,6 +68,7 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         self.pushButton_2.setEnabled(True)
         serial.close()
         self.pushButton.setEnabled(False)
+        view.close()
     def startSerialPort(self):
         global view 
         global serial
@@ -77,6 +82,22 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         self.pushButton_2.setEnabled(False)
         view = GraphView('port1')
         view.show()
+        if self.radioButton.isChecked():
+            self.write([8, 0])
+        elif self.radioButton_2.isChecked():
+            self.write([9, 0])
+        else:
+            msg = QMessageBox()
+            msg.setText('Пин не выбран!')
+            msg.setWindowTitle('port_error')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
+            self.stopSerialPort()
+""" class Message(QMessageBox):
+    def __init__(self, title='none', text='unknown error'):
+        self.setWindowTitle(title)
+        self.setText(text)
+        self.exec_() """
 class GraphView(QMainWindow, port.Ui_MainWindow):
     def __init__(self, name) -> None:
         super().__init__()
