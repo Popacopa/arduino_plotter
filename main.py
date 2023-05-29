@@ -1,13 +1,11 @@
 import typing
 from PyQt5.QtCore import QIODevice
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from sys import argv, exit
 import plotWindow
 import port
 
-
-res = {}
 
 class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
     def __init__(self) -> None:
@@ -20,29 +18,49 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         self.ports = list(filter(__isUSB, self.ports))
         self.comboBox.addItems(self.ports)
         self.checkBox.clicked.connect(self.check)
-        self.checkBox_2.clicked.connect(self.check_2)
-        self.checkBox_3.clicked.connect(self.check_3)
-        self.checkBox_4.clicked.connect(self.check_4)
+        self.checkBox_2.clicked.connect(self.__check_2)
+        self.checkBox_3.clicked.connect(self.__check_3)
+        self.checkBox_4.clicked.connect(self.__check_4)
         self.pushButton.setEnabled(False)
+    def tryToOpen(func):
+        def wrapper(self):
+            if self.pushButton_2.isEnabled() == False:
+                func(self)
+            else:
+                msg = QMessageBox()
+                msg.setText('порт не запущен!')
+                #msg.setFixedWidth(1000)
+                msg.setWindowTitle('port_error')
+                msg.setIcon(QMessageBox.Warning)
+                msg.exec_()
+        return wrapper
     def __printData(self):...
         #In = serial.readLine()
         #print(In)
+    @tryToOpen
     def check(self):
-        match self.checkBox.checkState():
-            case 2:serial.write(bytes([4, 1])); #print(bytes([4, 1]))
-            case 0:serial.write(bytes([4, 0])); #print(bytes([4, 0]))
-    def check_2(self):
+            match self.checkBox.checkState():
+                case 2:serial.write(bytes([4, 1])); #print(bytes([4, 1]))
+                case 0:serial.write(bytes([4, 0])); #print(bytes([4, 0]))
+    @tryToOpen
+    def __check_2(self):
         match self.checkBox_2.checkState():
             case 2:serial.write(bytes([5, 1])); #print(bytes([4, 1]))
             case 0:serial.write(bytes([5, 0]));
-    def check_3(self):
+    @tryToOpen
+    def __check_3(self):
          match self.checkBox_3.checkState():
             case 2:serial.write(bytes([6, 1])); #print(bytes([4, 1]))
             case 0:serial.write(bytes([6, 0]));
-    def check_4(self):
+    @tryToOpen
+    def __check_4(self):
          match self.checkBox_4.checkState():
             case 2:serial.write(bytes([7, 1])); #print(bytes([4, 1]))
             case 0:serial.write(bytes([7, 0]));
+    def stopSerialPort(self):
+        self.pushButton_2.setEnabled(True)
+        serial.close()
+        self.pushButton.setEnabled(False)
     def startSerialPort(self):
         #global view 
         global serial
@@ -52,6 +70,7 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         serial.open(QIODevice.ReadWrite)
         serial.readyRead.connect(self.__printData)
         self.pushButton.setEnabled(True)
+        self.pushButton.clicked.connect(self.stopSerialPort)
         self.pushButton_2.setEnabled(False)
         #view = GraphView('port1')
         #view.show()
