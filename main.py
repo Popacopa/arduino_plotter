@@ -6,7 +6,8 @@ from sys import argv, exit
 import plotWindow
 import port
 
-
+coordX = []
+coordY = []
 class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
     def __init__(self) -> None:
         super().__init__()
@@ -38,7 +39,10 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         def toInt(val):
             return int(val)
         res = list(map(toInt, res))
-        print(res)
+        if res[0] == 1:
+            coordX.append(res[1])
+            coordY.append(res[2])
+            view.write()
     @tryToOpen
     def check(self):
             match self.checkBox.checkState():
@@ -64,7 +68,7 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         serial.close()
         self.pushButton.setEnabled(False)
     def startSerialPort(self):
-        #global view 
+        global view 
         global serial
         serial = QSerialPort()
         serial.BaudRate(9600)
@@ -81,7 +85,8 @@ class GraphView(QMainWindow, port.Ui_MainWindow):
         super().__init__()
         self.setWindowTitle(name)
         self.setupUi(self)
-        self.plot()
+    def write(self):
+        self.graph.plot(coordX, coordY)
 def main():
     app = QApplication(argv)
     window = MainWindow()
