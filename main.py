@@ -6,44 +6,44 @@ from sys import argv, exit
 import plotWindow
 import port
 
-coordX = []
-coordY = []
+coordX = []           # X axis coordinate array
+coordY = []           # Y axis coordinate array
 
-def tryToOpen(func):
+def tryToOpen(func):  # to send the port_error messange
     def wrapper(self):
         if self.pushButton_2.isEnabled() == False:
             func(self)
         else:
-            msg = QMessageBox()
-            msg.setText('Порт не запущен!')
-            msg.setWindowTitle('port_error')
-            msg.setIcon(QMessageBox.Warning)
+            msg = QMessageBox()                    # messenge
+            msg.setText('Порт не запущен!')        # text of messange
+            msg.setWindowTitle('port_error')       # title of messange
+            msg.setIcon(QMessageBox.Warning)       # icon of messange
             msg.exec_()
     return wrapper
 
-class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
-    def __init__(self) -> None:
+class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the main window class 
+    def __init__(self) -> None:                                          # the main window constructor
         super().__init__()
-        self.setupUi(self)
-        self.pushButton_2.clicked.connect(self.startSerialPort)
-        self.ports = {port.portName(): port.description() for port in QSerialPortInfo.availablePorts()}
-        def __isUSB(description):
+        self.setupUi(self)                                               # initing UI in Main window
+        self.pushButton_2.clicked.connect(self.startSerialPort)          # listening pushing
+        self.ports = {port.portName(): port.description() for port in QSerialPortInfo.availablePorts()}             #getting available ports
+        def __isUSB(description):                                        # the filter function, that filter available USB ports
             return True if 'USB' in self.ports[description] else False
-        self.ports = list(filter(__isUSB, self.ports))
-        self.comboBox.addItems(self.ports)
-        self.checkBox.clicked.connect(self.check)
-        self.checkBox_2.clicked.connect(self.__check_2)
-        self.checkBox_3.clicked.connect(self.__check_3)
-        self.checkBox_4.clicked.connect(self.__check_4)
-        self.pushButton.setEnabled(False)
-    def write(self, *args):
+        self.ports = list(filter(__isUSB, self.ports))                   # filter available USB ports
+        self.comboBox.addItems(self.ports)                               # add ports to combo box
+        self.checkBox.clicked.connect(self.check)                        # listening pushing
+        self.checkBox_2.clicked.connect(self.__check_2)                  # listening pushing
+        self.checkBox_3.clicked.connect(self.__check_3)                  # listening pushing
+        self.checkBox_4.clicked.connect(self.__check_4)                  # listening pushing
+        self.pushButton.setEnabled(False)                                # setting status
+    def write(self, *args):                                              # write to serial
         serial.write(bytes(*args))
-    def __printData(self):
-        key, x, y =  str(serial.readLine(), 'utf-8').split(';')
+    def __printData(self):                                               # get data from serial
+        key, x, y =  str(serial.readLine(), 'utf-8').split(';')          # parse 
         if key == '1':
             coordX.append(int(x))
             coordY.append(int(y))
-            view.write()
+            view.write()                                                 # paint the graph!!!
     @tryToOpen
     def check(self):
             match self.checkBox.checkState():
