@@ -28,8 +28,7 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
                 func(self)
             else:
                 msg = QMessageBox()
-                msg.setText('порт не запущен!')
-                #msg.setFixedWidth(1000)
+                msg.setText('Порт не запущен!')
                 msg.setWindowTitle('port_error')
                 msg.setIcon(QMessageBox.Warning)
                 msg.exec_()
