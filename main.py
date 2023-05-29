@@ -33,9 +33,12 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
                 msg.setIcon(QMessageBox.Warning)
                 msg.exec_()
         return wrapper
-    def __printData(self):...
-        #In = serial.readLine()
-        #print(In)
+    def __printData(self):
+        res =  str(serial.readLine(), 'utf-8').split(';')
+        def toInt(val):
+            return int(val)
+        res = list(map(toInt, res))
+        print(res)
     @tryToOpen
     def check(self):
             match self.checkBox.checkState():
@@ -71,14 +74,14 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):
         self.pushButton.setEnabled(True)
         self.pushButton.clicked.connect(self.stopSerialPort)
         self.pushButton_2.setEnabled(False)
-        #view = GraphView('port1')
-        #view.show()
+        view = GraphView('port1')
+        view.show()
 class GraphView(QMainWindow, port.Ui_MainWindow):
     def __init__(self, name) -> None:
         super().__init__()
         self.setWindowTitle(name)
         self.setupUi(self)
-
+        self.plot()
 def main():
     app = QApplication(argv)
     window = MainWindow()
