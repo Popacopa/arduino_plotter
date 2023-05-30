@@ -49,22 +49,22 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the m
     @tryToOpen
     def check(self):
             match self.checkBox.checkState():
-                case 2:serial.write(bytes([4, 1])); #print(bytes([4, 1]))
-                case 0:serial.write(bytes([4, 0])); #print(bytes([4, 0]))
+                case 2:serial.write(bytes([4, 1])); 
+                case 0:serial.write(bytes([4, 0])); 
     @tryToOpen
     def __check_2(self):
         match self.checkBox_2.checkState():
-            case 2:serial.write(bytes([5, 1])); #print(bytes([4, 1]))
+            case 2:serial.write(bytes([5, 1])); 
             case 0:serial.write(bytes([5, 0]));
     @tryToOpen
     def __check_3(self):
          match self.checkBox_3.checkState():
-            case 2:serial.write(bytes([6, 1])); #print(bytes([4, 1]))
+            case 2:serial.write(bytes([6, 1])); 
             case 0:serial.write(bytes([6, 0]));
     @tryToOpen
     def __check_4(self):
          match self.checkBox_4.checkState():
-            case 2:serial.write(bytes([7, 1])); #print(bytes([4, 1]))
+            case 2:serial.write(bytes([7, 1])); 
             case 0:serial.write(bytes([7, 0]));
     def stopSerialPort(self):
         serial.close()
