@@ -39,11 +39,14 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the m
     def write(self, *args):                                              # write to serial
         serial.write(bytes(*args))
     def __printData(self):                                               # get data from serial
-        key, x, y =  str(serial.readLine(), 'utf-8').split(';')          # parse 
-        if key == '1':
-            coordX.append(int(x))
-            coordY.append(int(y))
-            view.write()                                                 # paint the graph!!!
+        key, x, y =  str(serial.readLine(), 'utf-8').strip().split(';')          # parse 
+        coordX.append(int(x))
+        coordY.append(int(y))
+        if len(coordX) > 400:
+            coordX.pop(0)
+            coordY.pop(0) 
+        view.write()  
+        print([int(key), int(x), int(y)])                                               # paint the graph!!!
     @tryToOpen
     def check(self):
             match self.checkBox.checkState():
@@ -65,10 +68,10 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the m
             case 2:serial.write(bytes([7, 1])); #print(bytes([4, 1]))
             case 0:serial.write(bytes([7, 0]));
     def stopSerialPort(self):
-        self.pushButton_2.setEnabled(True)
         serial.close()
+        #view.close()
+        self.pushButton_2.setEnabled(True)
         self.pushButton.setEnabled(False)
-        view.close()
     def startSerialPort(self):
         global view 
         global serial
@@ -76,33 +79,24 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the m
         serial.BaudRate(9600)
         serial.setPortName(self.comboBox.currentText())
         serial.open(QIODevice.ReadWrite)
-        serial.readyRead.connect(self.__printData)
-        self.pushButton.setEnabled(True)
-        self.pushButton.clicked.connect(self.stopSerialPort)
-        self.pushButton_2.setEnabled(False)
-        view = GraphView('port1')
-        view.show()
         if self.radioButton.isChecked():
+            view = GraphView('port1')
+            view.show()
             self.write([8, 0])
         elif self.radioButton_2.isChecked():
+            view = GraphView('port1')
+            view.show()
             self.write([9, 0])
-        else:
-            msg = QMessageBox()
-            msg.setText('Пин не выбран!')
-            msg.setWindowTitle('port_error')
-            msg.setIcon(QMessageBox.Warning)
-            msg.exec_()
-            self.stopSerialPort()
-""" class Message(QMessageBox):
-    def __init__(self, title='none', text='unknown error'):
-        self.setWindowTitle(title)
-        self.setText(text)
-        self.exec_() """
+        self.pushButton.setEnabled(True)
+        self.pushButton_2.setEnabled(False)
+        self.pushButton.clicked.connect(self.stopSerialPort)
+        serial.readyRead.connect(self.__printData)#serial.readyRead.connect(self.__printData)
 class GraphView(QMainWindow, port.Ui_MainWindow):
     def __init__(self, name) -> None:
         super().__init__()
         self.setWindowTitle(name)
         self.setupUi(self)
+        #self.graph.set
     def write(self):
         self.graph.clear()
         self.graph.plot(coordX, coordY)
