@@ -8,7 +8,7 @@ import port
 
 coordX = []           # X axis coordinate array
 coordY = []           # Y axis coordinate array
-filt = 2        
+filt = 2              # set filter value
 
 def tryToOpen(func):  # to send the port_error messange
     def wrapper(self):
