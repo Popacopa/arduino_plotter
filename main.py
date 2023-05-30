@@ -8,6 +8,7 @@ import port
 
 coordX = []           # X axis coordinate array
 coordY = []           # Y axis coordinate array
+filt = 2        
 
 def tryToOpen(func):  # to send the port_error messange
     def wrapper(self):
@@ -39,9 +40,12 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the m
     def write(self, *args):                                              # write to serial
         serial.write(bytes(*args))
     def __printData(self):                                               # get data from serial
-        key, x, y =  str(serial.readLine(), 'utf-8').strip().split(';')          # parse 
+        key, x, y =  str(serial.readLine(), 'utf-8').strip().split(';')
+        if len(coordY) > 0:
+            if abs(coordY[-1] - int(y)) <= filt:
+                y = coordY[-1]
         coordX.append(int(x))
-        coordY.append(int(y))
+        coordY.append(int(y)) 
         if len(coordX) > 400:
             coordX.pop(0)
             coordY.pop(0) 
