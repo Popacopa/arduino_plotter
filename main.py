@@ -1,4 +1,3 @@
-import typing
 from PyQt5.QtCore import QIODevice
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
@@ -103,7 +102,7 @@ class GraphView(QMainWindow, port.Ui_MainWindow):
     def write(self):
         self.graph.clear()
         self.graph.plot(coordX, coordY)
-        
+
 def main():
     app = QApplication(argv)
     window = MainWindow()
