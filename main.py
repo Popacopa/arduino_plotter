@@ -98,7 +98,6 @@ class GraphView(QMainWindow, port.Ui_MainWindow):
         super().__init__()
         self.setWindowTitle(name)
         self.setupUi(self)
-        #self.graph.set
     def write(self):
         self.graph.clear()
         self.graph.plot(coordX, coordY)
