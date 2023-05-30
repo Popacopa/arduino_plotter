@@ -7,14 +7,26 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>161</height>
+    <height>160</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>160</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>300</width>
+    <height>160</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>plotter</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>9</x>
@@ -61,14 +73,14 @@
        <item>
         <widget class="QRadioButton" name="radioButton">
          <property name="text">
-          <string>A3</string>
+          <string>A4</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QRadioButton" name="radioButton_2">
          <property name="text">
-          <string>A5</string>
+          <string>A6</string>
          </property>
         </widget>
        </item>

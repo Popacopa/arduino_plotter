@@ -22,7 +22,6 @@ bool plot_flag = 1;
 
 void loop() {
   checkData();
-  //Serial.print('checked!');
   if (plot_flag) {
     if (millis() - last_print1 >= 20) {
           AnalogData_1[1] = millis(); AnalogData_1[2] = analogRead(A4);
