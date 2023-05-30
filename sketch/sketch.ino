@@ -18,20 +18,19 @@ void setup() {
 unsigned long last_print1;
 unsigned long last_print2;
 char in[2];
-bool flag_8 ;
-bool flag_9 ;
+bool plot_flag = 1;
 
 void loop() {
   checkData();
   //Serial.print('checked!');
-  if (flag_8) {
+  if (plot_flag) {
     if (millis() - last_print1 >= 20) {
           AnalogData_1[1] = millis(); AnalogData_1[2] = analogRead(A4);
           Serial.print(AnalogData_1[0]); Serial.print(';'); Serial.print(AnalogData_1[1]);  Serial.print(';'); Serial.println(AnalogData_1[2]); 
           last_print1 = millis();
     } 
-  }
-  if (flag_9) {
+  } 
+  else {
     if (millis() - last_print2 >= 20) {
         AnalogData_2[1] = millis(); AnalogData_2[2] = analogRead(A6);
           Serial.print(AnalogData_2[0]); Serial.print(';'); Serial.print(AnalogData_2[1]);  Serial.print(';'); Serial.println(AnalogData_2[2]); 
@@ -68,12 +67,10 @@ void checkData() {
           case 0: digitalWrite(in[0], LOW); break;
         } break;
       case 8: 
-        flag_8 = 1;
-        flag_9 = 0;
+        plot_flag = 1;
         break;
       case 9: 
-        flag_8 = 0;
-        flag_9 = 1;
+        plot_flag = 0;
         break;
     }
   }
