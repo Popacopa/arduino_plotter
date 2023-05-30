@@ -88,7 +88,7 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the m
         self.pushButton.setEnabled(True)
         self.pushButton_2.setEnabled(False)
         self.pushButton.clicked.connect(self.stopSerialPort)
-        serial.readyRead.connect(self.__printData)#serial.readyRead.connect(self.__printData)
+        serial.readyRead.connect(self.__printData)
 class GraphView(QMainWindow, port.Ui_MainWindow):
     def __init__(self, name) -> None:
         super().__init__()
