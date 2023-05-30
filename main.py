@@ -45,8 +45,7 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the m
         if len(coordX) > 400:
             coordX.pop(0)
             coordY.pop(0) 
-        view.write()  
-        print([int(key), int(x), int(y)])                                               # paint the graph!!!
+        view.write()                                                 # paint the graph!!!
     @tryToOpen
     def check(self):
             match self.checkBox.checkState():
@@ -69,7 +68,7 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the m
             case 0:serial.write(bytes([7, 0]));
     def stopSerialPort(self):
         serial.close()
-        #view.close()
+        view.close()
         self.pushButton_2.setEnabled(True)
         self.pushButton.setEnabled(False)
     def startSerialPort(self):
@@ -79,14 +78,13 @@ class MainWindow(QMainWindow, plotWindow.Ui_MainWindow):                 # the m
         serial.BaudRate(9600)
         serial.setPortName(self.comboBox.currentText())
         serial.open(QIODevice.ReadWrite)
+        view = GraphView('port1')
         if self.radioButton.isChecked():
-            view = GraphView('port1')
-            view.show()
             self.write([8, 0])
-        elif self.radioButton_2.isChecked():
-            view = GraphView('port1')
             view.show()
+        elif self.radioButton_2.isChecked():
             self.write([9, 0])
+            view.show()
         self.pushButton.setEnabled(True)
         self.pushButton_2.setEnabled(False)
         self.pushButton.clicked.connect(self.stopSerialPort)
